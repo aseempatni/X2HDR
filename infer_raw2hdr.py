@@ -20,6 +20,12 @@ def clear_cache(transformer):
     for name, attn_processor in transformer.attn_processors.items():
         attn_processor.bank_kv.clear()
 
+def resize_to_target(image: np.ndarray, width: int, height: int) -> np.ndarray:
+    """Resize an HxWxC image to width x height."""
+    if image.shape[:2] != (height, width):
+        image = cv2.resize(image, (width, height), interpolation=cv2.INTER_LINEAR)
+    return image
+
 def preprocess_raw_to_exr(raw_image_path: str, width: int, height: int, output_dir: str):
     """
     Preprocess RAW file to EXR format with resizing.
@@ -48,7 +54,7 @@ def preprocess_raw_to_exr(raw_image_path: str, width: int, height: int, output_d
     raw_image = np.maximum(raw_image, 0.0)
     
     # Resize to target dimensions
-    resized_image = cv2.resize(raw_image, (width, height), interpolation=cv2.INTER_LINEAR)
+    resized_image = resize_to_target(raw_image, width, height)
     logger.info(f"Resized image to: {resized_image.shape}")
     
     # Save as EXR file in output directory
@@ -116,6 +122,10 @@ def process_raw_to_hdr(
         # Load the HDR image directly (assuming it's already EXR format)
         logger.info("Loading EXR file directly...")
         spatial_image = read_hdr_image(raw_image_path)
+        if spatial_image is None:
+            logger.error(f"Could not read input image: {raw_image_path}")
+            return
+        spatial_image = resize_to_target(spatial_image, width, height)
     
     # Run pipeline to generate HDR image
     logger.info("Running inference...")
