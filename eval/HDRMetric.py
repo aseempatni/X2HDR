@@ -12,7 +12,6 @@ from ImageDataset import ImageDataset
 import argparse
 from torch.utils.data import DataLoader
 from metrics import PSNR_weight,SSIM_weight,MAE_weight,dists_weight,lipis_weight
-from DISTS_pytorch import DISTS
 import pytorch_ssim
 import lpips
 import math
