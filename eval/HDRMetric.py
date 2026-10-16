@@ -206,10 +206,10 @@ class Trainer(object):
 
 def parse_config():
     parser = argparse.ArgumentParser()
-    parser.add_argument("--train", type=bool, default=True)
+    parser.add_argument("--train", action=argparse.BooleanOptionalAction, default=True)
     parser.add_argument("--metric", type=str, default="PSNR") # choose from MAE,PSNR,SSIM,LPIPS,DISTS
-    parser.add_argument("--resume", type=bool, default=False)
-    parser.add_argument("--save_ldr", type=bool, default=False, help="Whether to save the generated LDR sequences") 
+    parser.add_argument("--resume", action=argparse.BooleanOptionalAction, default=False)
+    parser.add_argument("--save_ldr", action=argparse.BooleanOptionalAction, default=False, help="Whether to save the generated LDR sequences") 
     parser.add_argument("--max_epochs", type=int, default=5000)
     parser.add_argument("--lr", type=float, default=0.1)
     parser.add_argument("--decay_interval", type=int, default=2000)
