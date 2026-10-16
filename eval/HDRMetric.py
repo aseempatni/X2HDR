@@ -139,10 +139,10 @@ class Trainer(object):
             print(f"Image: {self.img_name[0]}, Score: {assessmentV}")
             all_scores.append(assessmentV)
 
-        with torch.no_grad():
-            optimized_k = self.model.ek.mean().item()
-            x_value = calculate_optimized_x(img, optimized_k)
-            print(f"Image: {self.img_name[0]}, Optimized k: {optimized_k:.4f}, Calculated x: {x_value:.4f}")
+            with torch.no_grad():
+                optimized_k = self.model.ek.mean().item()
+                x_value = calculate_optimized_x(img, optimized_k)
+                print(f"Image: {self.img_name[0]}, Optimized k: {optimized_k:.4f}, Calculated x: {x_value:.4f}")
 
         valid_scores = [score for score in all_scores if not math.isnan(score)]
 
